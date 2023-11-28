@@ -1,0 +1,19 @@
+﻿<Window x:Class="wpf_dogClient_gyakorlo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:wpf_dogClient_gyakorlo"
+        mc:Ignorable="d"
+        Title="Dog_database" Height="450" Width="800"
+       >
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button x:Name="addButton" Content="Add Dog" Click="addButton_Click"></Button>
+            <Button x:Name="deleteButton" Content="Delete Dog" Click="deleteButton_Click"></Button>
+            <TextBlock Text="Search by name:    " Margin="10"></TextBlock>
+            <TextBox x:Name="searchBox" TextWrapping="Wrap" Width="120" TextChanged="TextBox_TextChanged"/>
+        </StackPanel>
+        <DataGrid x:Name="mainTable" d:ItemsSource="{d:SampleData ItemCount=5}" IsReadOnly="True"/>
+    </DockPanel>
+</Window>
