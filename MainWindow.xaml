@@ -10,6 +10,7 @@
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Button x:Name="addButton" Content="Add Dog" Click="addButton_Click"></Button>
+            <Button x:Name="modifyButton" Content="Update Dog" Click="modifyButton_Click"></Button>
             <Button x:Name="deleteButton" Content="Delete Dog" Click="deleteButton_Click"></Button>
             <TextBlock Text="Search by name:    " Margin="10"></TextBlock>
             <TextBox x:Name="searchBox" TextWrapping="Wrap" Width="120" TextChanged="TextBox_TextChanged"/>

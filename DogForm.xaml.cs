@@ -22,11 +22,33 @@ namespace wpf_dogClient_gyakorlo
     public partial class DogForm : Window
     {
         dogService dogService = new dogService();
-        Dog dog;
+        public Dog dog;
         public DogForm()
         {
             InitializeComponent();
-            
+        }
+
+        public DogForm(Dog dog)
+        {
+            InitializeComponent();
+            this.dog = dog;
+            updateDog(dog);
+        }
+
+        public void updateDog(Dog dog)
+        {
+            dogFormUpdate.Visibility = Visibility.Visible;
+            nameTextBox.Text = dog.Name;
+            breedTextBox.Text = dog.Breed;
+            ageTextBox.Text = dog.Age.ToString();
+            sizeComboBox.Text = dog.Size;
+            medicationTextBox.Text = dog.Medication;
+            vaccinatedComboBox.Text = dog.Vaccinated ? "Yes" : "No";
+            neuteredComboBox.Text = dog.Neutered ? "Yes" : "No";
+            diagnosisTextBox.Text = dog.Diagnosis;
+            visitedPicker.Value = dog.VisitedOn;
+            genderComboBox.Text = dog.Gender.ToString();
+
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -34,7 +56,7 @@ namespace wpf_dogClient_gyakorlo
           
         }
 
-        public Dog validateDog(Dog dog)     //Well, this is not actually validation, but it's a start
+        public Dog validateDog()     
         {
             if (String.IsNullOrEmpty(nameTextBox.Text))
             {
@@ -103,13 +125,35 @@ namespace wpf_dogClient_gyakorlo
         public void dogFormSend_Click(object sender, RoutedEventArgs e)
         {
             dog = new Dog();
-            validateDog(dog);
+            this.validateDog();
             dogService.PostDog(dog);
             this.Close();
         }
         public override string ToString()
         {
             return $"{dog.Name}, {dog.Size}, {dog.Breed}, {dog.Medication}, {dog.Vaccinated}, {dog.Gender}, {dog.Diagnosis}, {dog.Age}, {dog.Neutered}, {dog.VisitedOn}";
+        }
+
+        private void dogFormUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Dog dog = validateDog();
+                Dog updated = dogService.updateDog(this.dog)    ;
+                if (updated.Id != 0)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Error");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

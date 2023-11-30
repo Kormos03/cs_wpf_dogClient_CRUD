@@ -29,12 +29,20 @@ namespace wpf_dogClient_gyakorlo
     public partial class MainWindow : Window
     {
         dogService dogService = new dogService();
+        public static bool opened = false;
+        public static bool closing = false;
+
         public MainWindow()
         {
             InitializeComponent();  
-            LoginForm loginForm = new LoginForm();
-            loginForm.ShowDialog();
             mainTable.ItemsSource = dogService.GetDogs();
+            if (closing == true) { this.Close(); return; }
+            if(opened == false)
+            {
+                LoginForm loginForm = new LoginForm();
+                opened = true;
+                loginForm.ShowDialog();
+            }
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
@@ -58,8 +66,6 @@ namespace wpf_dogClient_gyakorlo
                 }
             }
             MessageBox.Show("Please select a dog!");
-            
-
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -75,6 +81,27 @@ namespace wpf_dogClient_gyakorlo
                     return false;
                 };
             
+        }
+
+        private void modifyButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dog dog = mainTable.SelectedItem as Dog;
+            if (dog == null) { MessageBox.Show("Please select a dog!"); return; }
+            DogForm dogForm = new DogForm(dog);
+            dogForm.Closed += (_, _) =>
+            {
+                mainTable.ItemsSource = dogService.GetDogs();
+            };
+            dogForm.ShowDialog();
+
+            mainTable.ItemsSource = dogService.GetDogs();
+        }
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            // Close all windows
+            closing = true;
         }
     }
 }

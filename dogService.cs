@@ -77,23 +77,24 @@ namespace wpf_dogClient_gyakorlo
                 return false;
             }
         }
-
-        private const string ConnectionString = "http://localhost/phpmyadmin/index.php?route=/table/sql&db=doglogindb&table=doglogintable";
-
-        public void InsertUser(string username, string password)
+        public Dog updateDog(Dog dog)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = "INSERT INTO doglogintable (username, password) VALUES (@username, @password)";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                string json = JsonConvert.SerializeObject(dog);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync(url + "/" + dog.Id, content).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    command.Parameters.AddWithValue("@username", username);
-                    command.Parameters.AddWithValue("@password", password);
-
-                    command.ExecuteNonQuery();
+                    MessageBox.Show("Dog updated!");
+                    return dog;
                 }
+                else { MessageBox.Show("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase); return null; }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
             }
         }
     }
