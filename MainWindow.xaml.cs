@@ -20,11 +20,6 @@ namespace wpf_dogClient_gyakorlo
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    //Make a database for login validation and then, every doctor can add their own dogs to the database.
-    //Make a login form, where the doctor can login and see every dog to prevent unaccepted access.
-    //The default login is the admin:admin, who can see every dog.
-    //Make a form, where the doctor can edit the dog's data.
-    //Make the frontend of the application.
 
     public partial class MainWindow : Window
     {
